@@ -77,7 +77,7 @@ A full-stack web application built with React.js and Express.js. [Add a brief on
 
    ```bash
    # Install backend dependencies
-   cd server
+   cd backend
    npm install
 
    # Install frontend dependencies
