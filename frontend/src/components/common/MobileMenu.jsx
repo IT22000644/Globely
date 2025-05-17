@@ -6,7 +6,16 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Menu, User, Heart, Settings, LogOut, Info } from "lucide-react";
+import {
+  Menu,
+  User,
+  Heart,
+  Settings,
+  LogOut,
+  Info,
+  Globe,
+  ChevronDown,
+} from "lucide-react";
 import { Button } from "../ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Link } from "react-router-dom";
@@ -24,6 +33,7 @@ import { backendApi } from "@/api/backendApi";
 const MobileMenu = ({ isOpen, setIsOpen, setIsAuthOpen }) => {
   const dispatch = useDispatch();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isExploreOpen, setIsExploreOpen] = useState(false);
   const authStatus = useSelector((state) => state.auth.isAuthenticated);
   const user = useSelector((state) => state.auth.user || {});
 
@@ -72,6 +82,12 @@ const MobileMenu = ({ isOpen, setIsOpen, setIsAuthOpen }) => {
                         Profile
                       </Button>
                     </Link>
+                    <Link to="/favorites" onClick={() => setIsOpen(false)}>
+                      <Button variant="ghost" className="w-full justify-start">
+                        <Heart className="h-4 w-4 mr-2" />
+                        Favorites
+                      </Button>
+                    </Link>
                     <Link to="/settings" onClick={() => setIsOpen(false)}>
                       <Button variant="ghost" className="w-full justify-start">
                         <Settings className="h-4 w-4 mr-2" />
@@ -104,18 +120,17 @@ const MobileMenu = ({ isOpen, setIsOpen, setIsAuthOpen }) => {
         <nav className="flex flex-col space-y-2 mt-4">
           <Link to="/countries" onClick={() => setIsOpen(false)}>
             <Button variant="ghost" className="w-full justify-start">
+              <Globe className="h-4 w-4 mr-2" />
               Countries
             </Button>
           </Link>
-          <Link to="/regions" onClick={() => setIsOpen(false)}>
+          <Link
+            to="/countries?type=region&term=asia"
+            onClick={() => setIsOpen(false)}
+          >
             <Button variant="ghost" className="w-full justify-start">
+              <Globe className="h-4 w-4 mr-2" />
               Regions
-            </Button>
-          </Link>
-          <Link to="/favorites" onClick={() => setIsOpen(false)}>
-            <Button variant="ghost" className="w-full justify-start">
-              <Heart className="h-4 w-4 mr-2" />
-              Favorites
             </Button>
           </Link>
           <Link to="/about" onClick={() => setIsOpen(false)}>
@@ -124,6 +139,39 @@ const MobileMenu = ({ isOpen, setIsOpen, setIsAuthOpen }) => {
               About
             </Button>
           </Link>
+
+          {/* Explore Dropdown */}
+          <Collapsible
+            open={isExploreOpen}
+            onOpenChange={setIsExploreOpen}
+            className="w-full"
+          >
+            <CollapsibleTrigger asChild>
+              <Button variant="ghost" className="w-full justify-between">
+                <div className="flex items-center">Explore</div>
+                <ChevronDown className="h-4 w-4" />
+              </Button>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <div className="flex flex-col space-y-1 ml-2 pl-4 mt-1">
+                <Link to="/trending" onClick={() => setIsOpen(false)}>
+                  <Button variant="ghost" className="w-full justify-start">
+                    Trending
+                  </Button>
+                </Link>
+                <Link to="/compare" onClick={() => setIsOpen(false)}>
+                  <Button variant="ghost" className="w-full justify-start">
+                    Compare
+                  </Button>
+                </Link>
+                <Link to="/map" onClick={() => setIsOpen(false)}>
+                  <Button variant="ghost" className="w-full justify-start">
+                    World Map
+                  </Button>
+                </Link>
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
         </nav>
 
         {/* Separator */}

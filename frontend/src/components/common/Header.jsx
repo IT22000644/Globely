@@ -47,7 +47,7 @@ export default function Header({ isAuthOpen, setIsAuthOpen }) {
       icon: <Globe className="h-4 w-4 mr-2" />,
     },
     {
-      to: "/regions",
+      to: "/countries?type=region&term=asia",
       label: "Regions",
       icon: <Globe className="h-4 w-4 mr-2" />,
     },

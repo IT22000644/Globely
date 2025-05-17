@@ -45,21 +45,24 @@ const CountryDetails = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const [addFavorite] = useAddFavoriteMutation();
   const [deleteFavorite] = useDeleteFavoriteMutation();
-  const { data: favorites = [] } = useGetFavoritesQuery(undefined, {
+  const { data: data = [] } = useGetFavoritesQuery(undefined, {
     skip: !isAuthenticated,
   });
 
   const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
-    // Check if country is in favorites
-    if (isAuthenticated && favorites?.length && country) {
-      const isInFavorites = favorites.some(
-        (fav) => fav.countryCode === country?.cca3
-      );
-      setIsFavorite(isInFavorites);
+    const favorites = data?.favorites || [];
+    if (!isAuthenticated || !country || !Array.isArray(favorites)) {
+      setIsFavorite(false);
+      return;
     }
-  }, [favorites, country, isAuthenticated]);
+
+    console.log();
+
+    const isInFavorites = favorites.some((fav) => fav.cca3 === country.cca3);
+    setIsFavorite(isInFavorites);
+  }, [isAuthenticated, data, country]);
 
   const handleFavoriteClick = async () => {
     if (!isAuthenticated) {
@@ -71,7 +74,7 @@ const CountryDetails = () => {
       if (!country) return;
 
       const favoriteData = {
-        countryCode: country?.cca3 || cc3,
+        cca3: country?.cca3 || cc3,
         name: country?.name?.common || "Unknown",
         flag: country?.flags?.svg || country?.flags?.png || "",
       };
@@ -83,7 +86,7 @@ const CountryDetails = () => {
         toast.success(`${country.name.common} added to favorites`);
       } else {
         // Remove from favorites
-        await deleteFavorite({ countryCode: country.cca3 }).unwrap();
+        await deleteFavorite(country.cca3).unwrap();
         setIsFavorite(false);
         toast.success(`${country.name.common} removed from favorites`);
       }
@@ -413,7 +416,7 @@ const CountryDetails = () => {
                       key={border}
                       variant="outline"
                       className="px-3 py-1 cursor-pointer"
-                      onClick={() => navigate(`/country/${border}`)}
+                      onClick={() => navigate(`/countries/${border}`)}
                     >
                       {border}
                     </Badge>

@@ -10,9 +10,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { X, Heart, MapPin, Globe2, Star, Trash2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useGetFavoritesQuery } from "@/api/backendApi";
+import {
+  useDeleteFavoriteMutation,
+  useGetFavoritesQuery,
+} from "@/api/backendApi";
 import { useGetCountriesByCodesQuery } from "@/api/countriesApi";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const FavoritesDrawer = ({
   openFavorites,
@@ -34,9 +38,18 @@ const FavoritesDrawer = ({
       skip: favoriteCodes.length === 0 || !isAuthenticated,
     });
 
-  const handleRemoveFavorite = (countryCode) => {
-    // This would call your remove favorite API
-    console.log(`Removing ${countryCode} from favorites`);
+  const [deleteFavorite] = useDeleteFavoriteMutation();
+
+  const handleRemoveFavorite = async (countryCode) => {
+    try {
+      await deleteFavorite(countryCode).unwrap();
+      console.log(`Removing ${countryCode} from favorites`);
+      toast.success(`${countryCode} removed from favorites`);
+    } catch (error) {
+      toast.error(
+        `Error removing favorites: ${error.message || "Please try again"}`
+      );
+    }
   };
 
   const EmptyState = () => (

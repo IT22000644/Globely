@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { Search, X, MapPin, Users, Languages, Landmark } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -67,21 +68,20 @@ const SearchSection = () => {
           </p>
         </motion.div>
 
-        {/* Improved search box with dropdown */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="relative mb-12"
         >
-          <div className="bg-black/90 rounded-xl p-6 shadow-lg border border-gray-800">
+          <div className="bg-white dark:bg-black/90 rounded-xl p-6 shadow-lg border border-gray-300 dark:border-gray-800">
             <div className="flex flex-col sm:flex-row items-center gap-4">
               <div className="relative flex-1 min-w-[200px] w-full h-12">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-600 dark:text-gray-400" />
                 <Input
                   type="text"
                   placeholder="Search for a country, capital or region..."
-                  className="pl-12 pr-4 text-base rounded-lg bg-gray-900/70 border border-gray-700 focus:border-blue-500 focus:ring-blue-500/30 w-full h-12 text-white"
+                  className="pl-12 pr-4 text-base rounded-lg bg-gray-100 dark:bg-gray-900/70 border border-gray-300 dark:border-gray-700 focus:border-blue-500 focus:ring-blue-500/30 w-full h-12 text-gray-900 dark:text-white"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -90,14 +90,13 @@ const SearchSection = () => {
                     type="button"
                     variant="ghost"
                     size="icon"
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white h-8 w-8 p-0"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white h-8 w-8 p-0"
                     onClick={() => setSearchTerm("")}
                   >
                     <X className="h-4 w-4" />
                   </Button>
                 )}
               </div>
-              {/* This is the specific section that needs fixing */}
               <div className="flex gap-3 sm:flex-shrink-0 w-full sm:w-auto">
                 <div className="flex-1 sm:flex-none sm:w-40 flex items-stretch">
                   <Select
@@ -105,16 +104,24 @@ const SearchSection = () => {
                     onValueChange={(value) => setSearchType(value)}
                   >
                     <SelectTrigger
-                      className="border border-gray-700 bg-gray-900/70 text-white focus:ring-blue-500/30 min-w-[100px] w-full"
-                      style={{ height: "48px", lineHeight: "48px" }} // Force exact height
+                      className="border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-900/70 text-gray-900 dark:text-white focus:ring-blue-500/30 min-w-[100px] w-full"
+                      style={{ height: "48px", lineHeight: "48px" }}
                     >
                       <SelectValue placeholder="Name" />
                     </SelectTrigger>
-                    <SelectContent className="bg-gray-900 border border-gray-700">
-                      <SelectItem value="name">Name</SelectItem>
-                      <SelectItem value="capital">Capital</SelectItem>
-                      <SelectItem value="region">Region</SelectItem>
-                      <SelectItem value="language">Language</SelectItem>
+                    <SelectContent className="bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700">
+                      <SelectItem value="name" className="dark:text-white">
+                        Name
+                      </SelectItem>
+                      <SelectItem value="capital" className="dark:text-white">
+                        Capital
+                      </SelectItem>
+                      <SelectItem value="region" className="dark:text-white">
+                        Region
+                      </SelectItem>
+                      <SelectItem value="language" className="dark:text-white">
+                        Language
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
